@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Eternal - Wedding Films & Photography</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Nunito+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}html{scroll-behavior:smooth}body{font-family:'Nunito Sans',sans-serif;color:#2C2C2C;background:#FAF9F7;overflow-x:hidden}
+    @keyframes fadeInUp{from{opacity:0;transform:translateY(40px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes gentlePulse{0%,100%{opacity:1}50%{opacity:.6}}
+    @keyframes scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+    .animate-on-scroll{opacity:0;transform:translateY(40px);transition:all .8s ease-out}.animate-on-scroll.visible{opacity:1;transform:translateY(0)}
+    .fade-in-up{animation:fadeInUp .8s ease-out forwards}.delay-1{animation-delay:.1s;opacity:0}.delay-2{animation-delay:.2s;opacity:0}.delay-3{animation-delay:.3s;opacity:0}.delay-4{animation-delay:.4s;opacity:0}
+    .nav{position:fixed;top:0;left:0;right:0;z-index:1000;padding:20px 0;transition:all .3s ease}.nav.scrolled{background:rgba(250,249,247,.95);backdrop-filter:blur(10px);border-bottom:1px solid rgba(44,44,44,.08)}
+    .nav-content{max-width:1400px;margin:0 auto;padding:0 40px;display:flex;justify-content:space-between;align-items:center}
+    .logo-text{font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:500;letter-spacing:2px}.logo-subtext{font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#8B7355;margin-top:2px}
+    .nav-links{display:flex;gap:40px}.nav-link{background:none;border:none;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#2C2C2C;cursor:pointer;transition:color .3s;text-decoration:none}.nav-link:hover{color:#8B7355}
+    .hero{position:relative;height:100vh;display:flex;align-items:center;justify-content:center;overflow:hidden}
+    .hero-video-bg{position:absolute;top:0;left:0;width:100%;height:100%;object-fit:cover;z-index:0}
+    .hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(250,249,247,.3) 0%,rgba(250,249,247,.6) 40%,rgba(250,249,247,.92) 100%);z-index:1}
+    .hero-content{position:relative;z-index:2;text-align:center;max-width:800px;padding:0 40px}
+    .hero-pretext{font-size:13px;letter-spacing:4px;text-transform:uppercase;color:#8B7355;margin-bottom:20px}
+    .hero-title{font-family:'Cormorant Garamond',serif;font-size:clamp(48px,8vw,80px);font-weight:400;line-height:1.1;margin-bottom:24px}
+    .hero-subtitle{font-family:'Cormorant Garamond',serif;font-size:clamp(20px,3vw,26px);font-weight:300;font-style:italic;color:#5C5C5C;margin-bottom:48px}
+    .hero-buttons{display:flex;gap:20px;justify-content:center;flex-wrap:wrap}
+    .cta-button{font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:18px 40px;background:#2C2C2C;color:#FAF9F7;border:none;cursor:pointer;transition:all .3s;text-decoration:none}.cta-button:hover{background:#8B7355;transform:translateY(-2px)}
+    .cta-button-outline{font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:18px 40px;background:transparent;color:#2C2C2C;border:1px solid #2C2C2C;cursor:pointer;transition:all .3s;text-decoration:none}.cta-button-outline:hover{background:#2C2C2C;color:#FAF9F7}
+    .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:12px;animation:gentlePulse 2s ease-in-out infinite}
+    .scroll-text{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8B7355}.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,#8B7355,transparent)}
+    .intro-section{padding:140px 40px;background:#FAF9F7}.intro-content{max-width:800px;margin:0 auto;text-align:center}
+    .intro-decorator{font-size:24px;color:#8B7355;margin-bottom:32px}
+    .intro-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,44px);font-weight:400;line-height:1.3;margin-bottom:40px}
+    .intro-text{font-size:17px;line-height:1.9;color:#5C5C5C;margin-bottom:24px;font-weight:300}
+    .featured-film-section{padding:80px 40px 120px;background:#2C2C2C}
+    .featured-film-header{text-align:center;margin-bottom:60px}
+    .section-label{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8B7355;display:block;margin-bottom:16px}
+    .section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,52px);font-weight:400;margin-bottom:16px}
+    .featured-film-header .section-title{color:#FAF9F7}
+    .featured-video-container{max-width:1100px;margin:0 auto;border-radius:4px;overflow:hidden;box-shadow:0 30px 60px rgba(0,0,0,.4)}
+    .featured-video-container video{width:100%;display:block}
+    .featured-film-info{text-align:center;margin-top:40px;color:#FAF9F7}
+    .featured-film-couple{font-family:'Cormorant Garamond',serif;font-size:32px;margin-bottom:8px}
+    .featured-film-location{font-size:12px;letter-spacing:3px;text-transform:uppercase;color:#8B7355}
+    .stories-section{padding:100px 40px 140px;background:#F5F4F1}
+    .section-header{text-align:center;margin-bottom:80px}.section-subtitle{font-size:16px;color:#5C5C5C;font-weight:300}
+    .stories-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:40px;max-width:1400px;margin:0 auto}
+    .story-card{cursor:pointer;transition:transform .3s}
+    .story-image-wrapper{position:relative;aspect-ratio:4/5;overflow:hidden;margin-bottom:24px}
+    .story-image-wrapper img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+    .story-card:hover .story-image-wrapper img{transform:scale(1.05)}
+    .story-overlay{position:absolute;inset:0;background:rgba(44,44,44,.4);display:flex;flex-direction:column;align-items:center;justify-content:center;opacity:0;transition:opacity .3s}
+    .story-card:hover .story-overlay{opacity:1}
+    .play-button{width:60px;height:60px;border-radius:50%;background:rgba(44,44,44,.8);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+    .watch-film{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#FAF9F7}
+    .story-info{text-align:center}
+    .story-couple{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:500;margin-bottom:8px}
+    .story-location{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8B7355;margin-bottom:8px}
+    .story-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:#5C5C5C}
+    .gallery-strip{padding:80px 0;background:#FAF9F7;overflow:hidden}
+    .gallery-strip-inner{display:flex;gap:20px;animation:scroll 30s linear infinite}
+    .gallery-strip img{height:300px;width:auto;object-fit:cover;flex-shrink:0}
+    .about-section{padding:140px 40px;background:#FAF9F7}
+    .about-content{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+    .about-title{font-family:'Cormorant Garamond',serif;font-size:clamp(32px,4vw,44px);font-weight:400;line-height:1.3;margin-bottom:32px}
+    .about-paragraph{font-size:17px;line-height:1.9;color:#5C5C5C;margin-bottom:24px;font-weight:300}
+    .signature{margin-top:40px}.signature-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;color:#8B7355}
+    .about-image-wrapper{position:relative}.about-image-wrapper img{width:100%;display:block}
+    .about-image-accent{position:absolute;top:-20px;right:-20px;width:100%;height:100%;border:1px solid #D4C4B0;z-index:-1}
+    .testimonials-section{padding:140px 40px;background:#2C2C2C}
+    .testimonials-section .section-title{color:#FAF9F7}
+    .testimonials-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:40px;max-width:1200px;margin:0 auto}
+    .testimonial-card{padding:48px;background:rgba(250,249,247,.03);border:1px solid rgba(250,249,247,.1)}
+    .quote-icon{font-family:'Cormorant Garamond',serif;font-size:72px;color:#8B7355;line-height:1;margin-bottom:16px}
+    .testimonial-text{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;line-height:1.8;color:#FAF9F7;margin-bottom:24px}
+    .testimonial-couple{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8B7355}
+    .contact-section{padding:140px 40px;background:#FAF9F7}
+    .contact-content{max-width:700px;margin:0 auto}.contact-header{text-align:center;margin-bottom:60px}
+    .contact-title{font-family:'Cormorant Garamond',serif;font-size:clamp(36px,5vw,52px);font-weight:400;margin-bottom:16px}
+    .contact-subtitle{font-size:16px;color:#5C5C5C;font-weight:300;max-width:500px;margin:0 auto;line-height:1.7}
+    .contact-form{display:flex;flex-direction:column;gap:32px}
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:24px}.form-group{display:flex;flex-direction:column;gap:8px}
+    .form-label{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#8B7355}
+    .form-input,.form-select,.form-textarea{font-family:'Nunito Sans',sans-serif;font-size:16px;padding:16px 0;border:none;border-bottom:1px solid #D4C4B0;background:transparent;color:#2C2C2C;transition:border-color .3s}
+    .form-input:focus,.form-select:focus,.form-textarea:focus{outline:none;border-color:#8B7355}
+    .form-textarea{resize:vertical;min-height:120px}::placeholder{color:#A09890}
+    .submit-button{font-size:12px;letter-spacing:2px;text-transform:uppercase;padding:20px 48px;background:#2C2C2C;color:#FAF9F7;border:none;cursor:pointer;transition:all .3s;align-self:center;margin-top:16px}.submit-button:hover{background:#8B7355;transform:translateY(-2px)}
+    .footer{padding:80px 40px;background:#F5F4F1;border-top:1px solid rgba(44,44,44,.08)}
+    .footer-content{max-width:1200px;margin:0 auto;text-align:center}
+    .footer-logo{font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:500;letter-spacing:2px}
+    .footer-tagline{font-family:'Cormorant Garamond',serif;font-size:16px;font-style:italic;color:#5C5C5C;margin-top:8px}
+    .footer-links{display:flex;justify-content:center;gap:40px;margin:32px 0}
+    .social-link{font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#5C5C5C;text-decoration:none;transition:color .3s}.social-link:hover{color:#8B7355}
+    .footer-copyright{font-size:12px;color:#A09890}
+    .modal{display:none;position:fixed;inset:0;background:rgba(44,44,44,.95);z-index:2000;align-items:center;justify-content:center;padding:40px;overflow-y:auto}.modal.active{display:flex}
+    .modal-content{background:#FAF9F7;width:100%;max-width:1000px;max-height:90vh;overflow-y:auto;position:relative}
+    .modal-close{position:absolute;top:20px;right:20px;width:48px;height:48px;background:#FAF9F7;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:10;border-radius:50%;box-shadow:0 2px 10px rgba(0,0,0,.1)}
+    .modal-video-container{width:100%;background:#000}.modal-video-container video{width:100%;display:block}
+    .modal-body{padding:48px}.modal-location{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8B7355;margin-bottom:8px}
+    .modal-couple{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:500;margin-bottom:8px}
+    .modal-tagline{font-family:'Cormorant Garamond',serif;font-size:18px;font-style:italic;color:#5C5C5C;margin-bottom:24px}
+    .modal-divider{width:60px;height:1px;background:#D4C4B0;margin-bottom:24px}
+    .modal-description{font-size:16px;line-height:1.8;color:#5C5C5C;margin-bottom:40px}
+    .modal-photos-title{font-size:11px;letter-spacing:3px;text-transform:uppercase;color:#8B7355;margin-bottom:24px}
+    .modal-photos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}.modal-photos-grid img{width:100%;aspect-ratio:1;object-fit:cover}
+    @media(max-width:768px){.nav-links{display:none}.about-content{grid-template-columns:1fr}.form-row{grid-template-columns:1fr}.hero-buttons{flex-direction:column;align-items:center}.modal-photos-grid{grid-template-columns:1fr}.gallery-strip img{height:200px}}
+  </style>
+</head>
+<body>
+  <nav class="nav" id="nav"><div class="nav-content"><div class="logo"><div class="logo-text">Eternal</div><div class="logo-subtext">Films & Photography</div></div><div class="nav-links"><a href="#stories" class="nav-link">Stories</a><a href="#about" class="nav-link">About</a><a href="#testimonials" class="nav-link">Kind Words</a><a href="#contact" class="nav-link">Connect</a></div></div></nav>
+
+  <section class="hero">
+    <video class="hero-video-bg" autoplay muted loop playsinline><source src="https://videos.pexels.com/video-files/3327522/3327522-uhd_2560_1440_30fps.mp4" type="video/mp4"></video>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <p class="hero-pretext fade-in-up delay-1">We don't just capture moments</p>
+      <h1 class="hero-title fade-in-up delay-2">We tell love stories</h1>
+      <p class="hero-subtitle fade-in-up delay-3">Cinematic wedding films that feel like poetry in motion</p>
+      <div class="hero-buttons fade-in-up delay-4"><a href="#featured" class="cta-button">Watch Stories</a><a href="#contact" class="cta-button-outline">Begin Your Story</a></div>
+    </div>
+    <div class="scroll-indicator"><span class="scroll-text">Scroll to explore</span><div class="scroll-line"></div></div>
+  </section>
+
+  <section class="intro-section animate-on-scroll" id="intro"><div class="intro-content"><div class="intro-decorator">✦</div><h2 class="intro-title">Every love story deserves to be told beautifully</h2><p class="intro-text">We are storytellers, not just videographers. We believe that a wedding film should feel like a love letter — intimate, honest, and timeless.</p><p class="intro-text">From the nervous laughter before the ceremony to the tearful speeches and stolen glances on the dance floor — we're there for all of it.</p></div></section>
+
+  <section class="featured-film-section animate-on-scroll" id="featured">
+    <div class="featured-film-header"><span class="section-label">Featured Film</span><h2 class="section-title">Priya & Arjun</h2></div>
+    <div class="featured-video-container"><video controls poster="https://images.pexels.com/photos/1045541/pexels-photo-1045541.jpeg?auto=compress&cs=tinysrgb&w=1260"><source src="https://videos.pexels.com/video-files/4446328/4446328-uhd_2732_1440_25fps.mp4" type="video/mp4"></video></div>
+    <div class="featured-film-info"><p class="featured-film-couple">A Three-Day Celebration of Love</p><p class="featured-film-location">Udaipur, Rajasthan</p></div>
+  </section>
+
+  <section class="stories-section" id="stories">
+    <div class="section-header animate-on-scroll"><span class="section-label">More Stories</span><h2 class="section-title">Love Stories</h2><p class="section-subtitle">Each wedding is unique. Each story, unforgettable.</p></div>
+    <div class="stories-grid">
+      <div class="story-card animate-on-scroll" onclick="openModal(0)"><div class="story-image-wrapper"><img src="https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Sarah & Michael"><div class="story-overlay"><div class="play-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z" fill="#FAF9F7"/></svg></div><span class="watch-film">Watch Film</span></div></div><div class="story-info"><h3 class="story-couple">Sarah & Michael</h3><p class="story-location">Tuscany, Italy</p><p class="story-tagline">Love letters written in golden hour light</p></div></div>
+      <div class="story-card animate-on-scroll" onclick="openModal(1)"><div class="story-image-wrapper"><img src="https://images.pexels.com/photos/1456613/pexels-photo-1456613.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Meera & James"><div class="story-overlay"><div class="play-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z" fill="#FAF9F7"/></svg></div><span class="watch-film">Watch Film</span></div></div><div class="story-info"><h3 class="story-couple">Meera & James</h3><p class="story-location">Kerala Backwaters</p><p class="story-tagline">Two cultures, one heartbeat</p></div></div>
+      <div class="story-card animate-on-scroll" onclick="openModal(2)"><div class="story-image-wrapper"><img src="https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Anika & Rohan"><div class="story-overlay"><div class="play-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z" fill="#FAF9F7"/></svg></div><span class="watch-film">Watch Film</span></div></div><div class="story-info"><h3 class="story-couple">Anika & Rohan</h3><p class="story-location">Jaipur, Rajasthan</p><p class="story-tagline">Colors of love in the Pink City</p></div></div>
+      <div class="story-card animate-on-scroll" onclick="openModal(3)"><div class="story-image-wrapper"><img src="https://images.pexels.com/photos/1730877/pexels-photo-1730877.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Emma & David"><div class="story-overlay"><div class="play-button"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M8 5.14v13.72a1 1 0 001.5.86l11-6.86a1 1 0 000-1.72l-11-6.86a1 1 0 00-1.5.86z" fill="#FAF9F7"/></svg></div><span class="watch-film">Watch Film</span></div></div><div class="story-info"><h3 class="story-couple">Emma & David</h3><p class="story-location">Lake Como, Italy</p><p class="story-tagline">Where mountains meet forever</p></div></div>
+    </div>
+  </section>
+
+  <section class="gallery-strip"><div class="gallery-strip-inner">
+    <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1488315/pexels-photo-1488315.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/3014853/pexels-photo-3014853.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1128783/pexels-photo-1128783.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
+    <img src="https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1488315/pexels-photo-1488315.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/3014853/pexels-photo-3014853.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/1128783/pexels-photo-1128783.jpeg?auto=compress&cs=tinysrgb&w=600" alt=""><img src="https://images.pexels.com/photos/265722/pexels-photo-265722.jpeg?auto=compress&cs=tinysrgb&w=600" alt="">
+  </div></section>
+
+  <section class="about-section animate-on-scroll" id="about"><div class="about-content"><div class="about-text"><span class="section-label">Our Philosophy</span><h2 class="about-title">We believe in the quiet moments</h2><p class="about-paragraph">In a world of highlight reels and perfectly posed photographs, we choose to focus on something different — the real, raw, beautiful chaos of love.</p><p class="about-paragraph">Our approach is documentary-style, observational, and deeply personal. We become part of your day, blending into the background while capturing the glances, the touches, the tears, and the laughter.</p><p class="about-paragraph">We don't direct love. We discover it.</p><div class="signature"><span class="signature-text">— The Eternal Team</span></div></div><div class="about-image-wrapper"><img src="https://images.pexels.com/photos/1589216/pexels-photo-1589216.jpeg?auto=compress&cs=tinysrgb&w=800" alt="Behind the scenes"><div class="about-image-accent"></div></div></div></section>
+
+  <section class="testimonials-section" id="testimonials">
+    <div class="section-header animate-on-scroll"><span class="section-label">Testimonials</span><h2 class="section-title">Kind Words</h2></div>
+    <div class="testimonials-grid">
+      <div class="testimonial-card animate-on-scroll"><div class="quote-icon">"</div><p class="testimonial-text">They didn't just film our wedding. They understood us. Every frame feels like a page from our love story.</p><p class="testimonial-couple">— Priya & Arjun</p></div>
+      <div class="testimonial-card animate-on-scroll"><div class="quote-icon">"</div><p class="testimonial-text">We've watched our film a hundred times. Each viewing reveals something new, some small moment we had forgotten.</p><p class="testimonial-couple">— Sarah & Michael</p></div>
+      <div class="testimonial-card animate-on-scroll"><div class="quote-icon">"</div><p class="testimonial-text">Our families spoke different languages, but the film speaks the universal language of love.</p><p class="testimonial-couple">— Meera & James</p></div>
+    </div>
+  </section>
+
+  <section class="contact-section animate-on-scroll" id="contact"><div class="contact-content"><div class="contact-header"><span class="section-label">Get in Touch</span><h2 class="contact-title">Let's tell your story</h2><p class="contact-subtitle">We'd love to hear about your wedding plans. Share a little about yourselves and your vision.</p></div>
+    <form class="contact-form" onsubmit="event.preventDefault();alert('Message sent! (Demo)');">
+      <div class="form-row"><div class="form-group"><label class="form-label">Your Name</label><input type="text" class="form-input" placeholder="First name"></div><div class="form-group"><label class="form-label">Partner's Name</label><input type="text" class="form-input" placeholder="Their first name"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Email</label><input type="email" class="form-input" placeholder="your@email.com"></div><div class="form-group"><label class="form-label">Phone</label><input type="tel" class="form-input" placeholder="+91 98765 43210"></div></div>
+      <div class="form-row"><div class="form-group"><label class="form-label">Wedding Date</label><input type="text" class="form-input" placeholder="DD / MM / YYYY"></div><div class="form-group"><label class="form-label">Location</label><input type="text" class="form-input" placeholder="City, Venue"></div></div>
+      <div class="form-group"><label class="form-label">Type of Celebration</label><select class="form-select"><option value="">Select one...</option><option>Wedding Film Only</option><option>Photography Only</option><option>Film + Photography</option><option>Pre-Wedding Shoot</option><option>Complete Coverage</option></select></div>
+      <div class="form-group"><label class="form-label">Tell us your story</label><textarea class="form-textarea" rows="5" placeholder="How did you meet? What's your vision?"></textarea></div>
+      <button type="submit" class="submit-button">Send Message</button>
+    </form>
+  </div></section>
+
+  <footer class="footer"><div class="footer-content"><div class="footer-brand"><div class="footer-logo">Eternal</div><p class="footer-tagline">Cinematic wedding stories, told with heart.</p></div><div class="footer-links"><a href="#" class="social-link">Instagram</a><a href="#" class="social-link">Vimeo</a><a href="#" class="social-link">Email</a></div><p class="footer-copyright">© 2024 Eternal Films & Photography</p></div></footer>
+
+  <div class="modal" id="modal"><div class="modal-content"><button class="modal-close" onclick="closeModal()"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button><div class="modal-video-container"><video id="modal-video" controls><source src="" type="video/mp4"></video></div><div class="modal-body"><p class="modal-location" id="modal-location"></p><h2 class="modal-couple" id="modal-couple"></h2><p class="modal-tagline" id="modal-tagline"></p><div class="modal-divider"></div><p class="modal-description" id="modal-description"></p><h3 class="modal-photos-title">Selected Moments</h3><div class="modal-photos-grid" id="modal-photos"></div></div></div></div>
+
+  <script>
+    const stories=[{couple:'Sarah & Michael',location:'Tuscany, Italy',tagline:'Love letters written in golden hour light',video:'https://videos.pexels.com/video-files/3327522/3327522-uhd_2560_1440_30fps.mp4',description:'An intimate vineyard wedding where 40 of their closest friends gathered to witness a love that crossed continents.',photos:['https://images.pexels.com/photos/1444442/pexels-photo-1444442.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/3651828/pexels-photo-3651828.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/1035665/pexels-photo-1035665.jpeg?auto=compress&cs=tinysrgb&w=600']},{couple:'Meera & James',location:'Kerala Backwaters',tagline:'Two cultures, one heartbeat',video:'https://videos.pexels.com/video-files/2078587/2078587-hd_1920_1080_30fps.mp4',description:'A fusion celebration honoring both Indian and British traditions against Kerala\'s emerald waters.',photos:['https://images.pexels.com/photos/1456613/pexels-photo-1456613.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/1024993/pexels-photo-1024993.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/2253870/pexels-photo-2253870.jpeg?auto=compress&cs=tinysrgb&w=600']},{couple:'Anika & Rohan',location:'Jaipur, Rajasthan',tagline:'Colors of love in the Pink City',video:'https://videos.pexels.com/video-files/4446328/4446328-uhd_2732_1440_25fps.mp4',description:'A grand five-day celebration where childhood sweethearts finally said forever.',photos:['https://images.pexels.com/photos/3014856/pexels-photo-3014856.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/1488315/pexels-photo-1488315.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/3014853/pexels-photo-3014853.jpeg?auto=compress&cs=tinysrgb&w=600']},{couple:'Emma & David',location:'Lake Como, Italy',tagline:'Where mountains meet forever',video:'https://videos.pexels.com/video-files/3327522/3327522-uhd_2560_1440_30fps.mp4',description:'Against alpine peaks and crystal waters, Emma and David exchanged vows in a centuries-old villa.',photos:['https://images.pexels.com/photos/1730877/pexels-photo-1730877.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/2959192/pexels-photo-2959192.jpeg?auto=compress&cs=tinysrgb&w=600','https://images.pexels.com/photos/1128783/pexels-photo-1128783.jpeg?auto=compress&cs=tinysrgb&w=600']}];
+    window.addEventListener('scroll',()=>{document.getElementById('nav').classList.toggle('scrolled',window.scrollY>50)});
+    const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting)el.target.classList.add('visible')})},{threshold:.1,rootMargin:'0px 0px -50px 0px'});
+    document.querySelectorAll('.animate-on-scroll').forEach(el=>observer.observe(el));
+    function openModal(i){const s=stories[i];document.getElementById('modal-video').src=s.video;document.getElementById('modal-location').textContent=s.location;document.getElementById('modal-couple').textContent=s.couple;document.getElementById('modal-tagline').textContent=s.tagline;document.getElementById('modal-description').textContent=s.description;document.getElementById('modal-photos').innerHTML=s.photos.map(p=>'<img src="'+p+'" alt="">').join('');document.getElementById('modal').classList.add('active');document.body.style.overflow='hidden'}
+    function closeModal(){document.getElementById('modal').classList.remove('active');document.body.style.overflow='';document.getElementById('modal-video').pause()}
+    document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+    document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+  </script>
+</body>
+</html>

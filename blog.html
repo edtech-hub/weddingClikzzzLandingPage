@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — Wedding Photography Stories & Guides | Heston Photo London</title>
+<meta name="description" content="Real weddings, planning guides, and photography tips from Heston Photo — award-winning luxury Indian and Asian wedding photographers in London.">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="https://www.hestonphoto.co.uk/blog">
+<meta property="og:title" content="Blog — Heston Photo | Wedding Photography Stories & Guides">
+<meta property="og:description" content="Real weddings, planning guides, and photography tips from award-winning Indian and Asian wedding photographers in London.">
+<meta property="og:image" content="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1200&q=80">
+<meta property="og:type" content="website">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Outfit:wght@200;300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --cream:#FDFBF7;--warm-white:#FFF9F0;--champagne:#F5EDE0;--gold:#C9A96E;--gold-light:#E8D5B0;--gold-dark:#9E7D45;--charcoal:#2A2520;--text:#3D3630;--text-light:#7A7068;--text-lighter:#A89E94;
+  --serif:'Cormorant Garamond',Georgia,serif;--sans:'Outfit',system-ui,sans-serif;
+  --shadow-sm:0 2px 12px rgba(0,0,0,.04);
+  --shadow-md:0 8px 30px rgba(0,0,0,.06);
+  --shadow-lg:0 20px 60px rgba(0,0,0,.08);
+  --radius:14px;--radius-sm:10px;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:var(--sans);color:var(--text);background:var(--cream);overflow-x:hidden;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+img{max-width:100%;display:block}
+
+/* Animations */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp .7s ease both}
+.delay-1{animation-delay:.1s}.delay-2{animation-delay:.2s}.delay-3{animation-delay:.3s}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;padding:1rem 3rem;display:flex;align-items:center;justify-content:space-between;background:rgba(18,15,12,.97);backdrop-filter:blur(20px)}
+.nav-logo{font-family:var(--serif);font-size:1.5rem;font-weight:300;letter-spacing:.12em;color:#fff;text-transform:uppercase}
+.nav-logo span{color:var(--gold);font-weight:400}
+.nav-links{display:flex;gap:2rem;align-items:center}
+.nav-links a{font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;font-weight:400;color:rgba(255,255,255,.7);transition:color .3s}
+.nav-links a:hover,.nav-links a.active{color:var(--gold)}
+.nav-cta{padding:.6rem 1.5rem!important;border:1px solid var(--gold)!important;color:var(--gold)!important;transition:all .3s!important}
+.nav-cta:hover{background:var(--gold)!important;color:#0e0c0a!important}
+
+/* PAGE HERO */
+.page-hero{padding:12rem 3rem 6rem;background:#0e0c0a;text-align:center;position:relative;overflow:hidden}
+.page-hero::before{content:'';position:absolute;inset:0;background:url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=1600&q=60') center/cover no-repeat;opacity:.12;filter:blur(2px)}
+.page-hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:80px;background:linear-gradient(transparent,var(--cream))}
+.page-hero-inner{position:relative;z-index:2}
+.page-hero-tag{font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:inline-block;position:relative}
+.page-hero-tag::before,.page-hero-tag::after{content:'';position:absolute;top:50%;width:40px;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dark))}
+.page-hero-tag::before{right:calc(100% + 12px)}
+.page-hero-tag::after{left:calc(100% + 12px);background:linear-gradient(90deg,var(--gold-dark),transparent)}
+.page-hero h1{font-family:var(--serif);font-size:clamp(2.8rem,5.5vw,4.5rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1.2rem}
+.page-hero h1 em{font-style:italic;color:var(--gold)}
+.page-hero p{font-size:.95rem;color:rgba(255,255,255,.45);font-weight:300;max-width:520px;margin:0 auto;line-height:1.7}
+.hero-stats{display:flex;justify-content:center;gap:3.5rem;margin-top:2.5rem}
+.hero-stat{text-align:center}
+.hero-stat strong{display:block;font-family:var(--serif);font-size:2rem;font-weight:400;color:var(--gold);line-height:1}
+.hero-stat span{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.35);margin-top:.4rem;display:block}
+
+/* FILTER BAR */
+.filter-bar{padding:1.8rem 3rem;background:var(--warm-white);display:flex;align-items:center;gap:.6rem;flex-wrap:wrap;justify-content:center;position:sticky;top:54px;z-index:50;box-shadow:0 4px 20px rgba(0,0,0,.03);border-bottom:1px solid var(--champagne)}
+.filter-btn{padding:.5rem 1.3rem;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;border:1px solid transparent;background:transparent;color:var(--text-lighter);cursor:pointer;font-family:var(--sans);transition:all .3s;border-radius:40px;font-weight:400}
+.filter-btn:hover{color:var(--gold-dark);border-color:var(--gold-light)}
+.filter-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.06);font-weight:500}
+
+/* FEATURED */
+.blog-featured{max-width:1200px;margin:0 auto 3rem;display:grid;grid-template-columns:1.45fr 1fr;gap:0;border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow-lg);position:relative}
+.blog-featured-img{position:relative;min-height:440px;overflow:hidden}
+.blog-featured-img img{width:100%;height:100%;object-fit:cover;transition:transform .7s ease}
+.blog-featured:hover .blog-featured-img img{transform:scale(1.04)}
+.blog-featured-img::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(0,0,0,.15) 0%,transparent 60%);pointer-events:none}
+.blog-featured-body{background:#fff;padding:3rem 2.8rem;display:flex;flex-direction:column;justify-content:center}
+.blog-featured-body .featured-label{display:inline-block;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold-dark);background:rgba(201,169,110,.12);padding:.35rem 1rem;border-radius:20px;margin-bottom:1.3rem;font-weight:500;width:fit-content}
+.blog-featured-body h3{font-family:var(--serif);font-size:1.85rem;font-weight:400;color:var(--charcoal);line-height:1.25;margin-bottom:1rem;transition:color .3s}
+.blog-featured:hover .blog-featured-body h3{color:var(--gold-dark)}
+.blog-featured-body .featured-excerpt{font-size:.88rem;color:var(--text-light);line-height:1.75;font-weight:300;margin-bottom:1.8rem}
+
+/* GRID */
+.blog-section{padding:3rem 3rem 2rem;max-width:1280px;margin:0 auto}
+.blog-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2.2rem}
+.blog-card{background:#fff;border-radius:var(--radius);overflow:hidden;transition:box-shadow .4s ease,transform .4s ease;box-shadow:var(--shadow-sm);border:none}
+.blog-card:hover{box-shadow:0 18px 55px rgba(201,169,110,.14);transform:translateY(-6px)}
+.blog-card-img{position:relative;height:240px;overflow:hidden}
+.blog-card-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.blog-card:hover .blog-card-img img{transform:scale(1.08)}
+.blog-card-img::after{content:'';position:absolute;bottom:0;left:0;right:0;height:45%;background:linear-gradient(transparent,rgba(0,0,0,.12));pointer-events:none}
+.blog-cat{position:absolute;top:1rem;left:1rem;padding:.35rem .9rem;background:var(--gold);color:#fff;font-size:.6rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;z-index:2;border-radius:20px}
+.blog-card-body{padding:1.6rem 1.6rem 1.8rem}
+.blog-meta{display:flex;align-items:center;gap:.7rem;margin-bottom:.75rem}
+.blog-date{font-size:.7rem;letter-spacing:.06em;color:var(--text-lighter);font-weight:400}
+.blog-read{font-size:.7rem;letter-spacing:.06em;color:var(--text-lighter);font-weight:400}
+.blog-meta-dot{color:var(--gold);font-size:.3rem}
+.blog-card h3{font-family:var(--serif);font-size:1.2rem;font-weight:500;color:var(--charcoal);line-height:1.35;margin-bottom:.65rem;transition:color .3s}
+.blog-card:hover h3{color:var(--gold-dark)}
+.blog-card p{font-size:.84rem;color:var(--text-light);line-height:1.7;font-weight:300;margin-bottom:1.3rem;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.blog-link{font-size:.7rem;letter-spacing:.13em;text-transform:uppercase;font-weight:600;color:var(--gold-dark);display:inline-flex;align-items:center;gap:.4rem;transition:gap .3s,color .3s;position:relative}
+.blog-link::after{content:'';position:absolute;bottom:-3px;left:0;width:0;height:1.5px;background:var(--gold);transition:width .3s}
+.blog-link:hover{gap:.7rem;color:var(--gold)}
+.blog-link:hover::after{width:100%}
+
+/* PAGINATION */
+.pagination{display:flex;justify-content:center;align-items:center;gap:.6rem;padding:2.5rem 0 3rem}
+.page-btn{width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:1px solid var(--champagne);font-size:.78rem;color:var(--text-light);cursor:pointer;transition:all .3s;font-family:var(--sans);border-radius:var(--radius-sm);background:transparent}
+.page-btn.active{border-color:var(--gold);color:var(--gold);background:rgba(201,169,110,.06);font-weight:500}
+.page-btn:hover:not(.active){border-color:var(--gold-light);color:var(--gold-dark)}
+
+/* LAYOUT */
+.blog-layout{display:grid;grid-template-columns:1fr 340px;gap:3.5rem;max-width:1280px;margin:0 auto;padding:3rem 3rem 4rem;align-items:start}
+
+/* SIDEBAR */
+.sidebar{display:flex;flex-direction:column;gap:2rem;position:sticky;top:7rem}
+.sidebar-box{background:#fff;border-radius:var(--radius);padding:1.8rem;box-shadow:var(--shadow-sm);border:none;transition:box-shadow .3s}
+.sidebar-box:hover{box-shadow:var(--shadow-md)}
+.sidebar-box h4{font-family:var(--serif);font-size:1.15rem;font-weight:400;color:var(--charcoal);margin-bottom:1.2rem;padding-bottom:.8rem;border-bottom:2px solid var(--champagne);position:relative}
+.sidebar-box h4::after{content:'';position:absolute;bottom:-2px;left:0;width:40px;height:2px;background:var(--gold)}
+.sidebar-box p{font-size:.83rem;color:var(--text-light);line-height:1.65;font-weight:300;margin-bottom:1.2rem}
+.sidebar-input{width:100%;padding:.7rem 1rem;border:1.5px solid var(--champagne);background:var(--cream);font-family:var(--sans);font-size:.84rem;color:var(--text);outline:none;margin-bottom:.8rem;transition:border .3s,box-shadow .3s;border-radius:var(--radius-sm)}
+.sidebar-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,169,110,.1)}
+.btn-primary{display:inline-block;padding:.8rem 1.5rem;background:var(--gold);color:#fff;font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;font-weight:600;border:none;cursor:pointer;transition:all .3s;font-family:var(--sans);width:100%;text-align:center;border-radius:var(--radius-sm)}
+.btn-primary:hover{background:var(--gold-dark);transform:translateY(-1px);box-shadow:0 6px 20px rgba(201,169,110,.3)}
+.cat-list{list-style:none}
+.cat-list li{border-bottom:1px solid var(--champagne)}
+.cat-list li:last-child{border-bottom:none}
+.cat-list li a{display:flex;justify-content:space-between;align-items:center;padding:.7rem 0;font-size:.83rem;color:var(--text-light);font-weight:300;transition:all .3s}
+.cat-list li a:hover{color:var(--gold);padding-left:.4rem}
+.cat-list li a span{font-size:.72rem;color:var(--text-lighter);background:var(--cream);padding:.2rem .5rem;border-radius:12px;transition:all .3s}
+.cat-list li a:hover span{background:rgba(201,169,110,.12);color:var(--gold-dark)}
+.recent-post{display:flex;gap:1rem;margin-bottom:1.1rem;align-items:center;padding:.5rem;border-radius:var(--radius-sm);transition:background .3s}
+.recent-post:last-child{margin-bottom:0}
+.recent-post:hover{background:var(--cream)}
+.recent-post img{width:65px;height:65px;object-fit:cover;flex-shrink:0;border-radius:8px}
+.recent-post-info h5{font-family:var(--serif);font-size:.92rem;font-weight:400;color:var(--charcoal);line-height:1.3;margin-bottom:.25rem;transition:color .3s}
+.recent-post:hover .recent-post-info h5{color:var(--gold-dark)}
+.recent-post-info span{font-size:.68rem;color:var(--text-lighter);font-weight:300}
+
+/* CTA SIDEBAR */
+.sidebar-cta{background:linear-gradient(135deg,var(--charcoal) 0%,#1a1714 100%)!important;color:#fff}
+.sidebar-cta h4{color:var(--gold)!important;border-bottom-color:rgba(201,169,110,.2)!important}
+.sidebar-cta h4::after{background:var(--gold)}
+.sidebar-cta p{color:rgba(255,255,255,.6)!important}
+.sidebar-cta .btn-primary{background:var(--gold);color:var(--charcoal)}
+.sidebar-cta .btn-primary:hover{background:#fff;color:var(--charcoal)}
+
+/* FOOTER */
+.insta-bar{text-align:center;padding:5rem 2rem;background:#0e0c0a;position:relative}
+.insta-bar::before{content:'';position:absolute;top:0;left:10%;right:10%;height:1px;background:linear-gradient(90deg,transparent,var(--gold-dark),transparent)}
+.insta-bar a{font-family:var(--serif);font-size:1.6rem;font-weight:300;color:var(--gold);transition:color .3s}
+.insta-bar a:hover{color:var(--gold-light)}
+.insta-bar p{font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.3);margin-top:.6rem}
+footer{background:#0e0c0a;color:rgba(255,255,255,.5);padding:4rem 3rem 2rem;border-top:1px solid rgba(201,169,110,.1)}
+.footer-top{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem;max-width:1200px;margin:0 auto 3rem}
+.f-logo{font-family:var(--serif);font-size:1.3rem;font-weight:300;letter-spacing:.1em;color:white;text-transform:uppercase;margin-bottom:.8rem;display:block}
+.f-logo span{color:var(--gold)}
+.footer-brand p{font-size:.82rem;line-height:1.7;font-weight:300;max-width:280px}
+.footer-col h4{font-size:.68rem;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;font-weight:400}
+.footer-col a{display:block;font-size:.82rem;margin-bottom:.6rem;font-weight:300;transition:color .3s}
+.footer-col a:hover{color:var(--gold)}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;font-size:.72rem;font-weight:300;flex-wrap:wrap;gap:.5rem}
+
+@media(max-width:1024px){
+  .blog-layout{grid-template-columns:1fr;padding:2rem 1.5rem 3rem}
+  .sidebar{position:static;display:grid;grid-template-columns:1fr 1fr;gap:1.5rem}
+  .blog-featured{grid-template-columns:1fr}
+  .blog-grid{grid-template-columns:1fr 1fr}
+  .footer-top{grid-template-columns:1fr 1fr}
+  nav{padding:.8rem 1.5rem}
+  .hero-stats{gap:2rem}
+}
+@media(max-width:768px){
+  nav{padding:.8rem 1.2rem}
+  .nav-links{display:none}
+  .page-hero{padding:9rem 1.5rem 5rem}
+  .filter-bar{padding:1.2rem 1rem;gap:.4rem;top:44px}
+  .filter-btn{padding:.4rem .9rem;font-size:.62rem}
+  .blog-section{padding:2rem 1.2rem 2rem}
+  .blog-grid{grid-template-columns:1fr}
+  .blog-card-img{height:210px}
+  .sidebar{grid-template-columns:1fr}
+  .footer-top{grid-template-columns:1fr}
+  .footer-bottom{flex-direction:column;text-align:center}
+  .hero-stats{flex-wrap:wrap;gap:1.5rem}
+  .blog-featured-img{min-height:280px}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">Heston<span>Photo</span></a>
+  <div class="nav-links">
+    <a href="index.html#about">About</a>
+    <a href="index.html#portfolio">Portfolio</a>
+    <a href="index.html#investment">Your Investment</a>
+    <a href="index.html#ceremonies">Ceremonies</a>
+    <a href="index.html#testimonials">Testimonials</a>
+    <a href="index.html#faq">FAQ</a>
+    <a href="blog.html" class="active">Blog</a>
+    <a href="index.html#contact" class="nav-cta">Contact Us</a>
+  </div>
+</nav>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <div class="page-hero-inner fade-up">
+    <div class="page-hero-tag">Stories &amp; Inspiration</div>
+    <h1>The Heston Photo <em>Journal</em></h1>
+    <p>Real weddings, planning guides, tips &amp; advice for Indian and Asian couples planning their celebration in the UK and beyond.</p>
+    <div class="hero-stats">
+      <div class="hero-stat"><strong>50+</strong><span>Stories Shared</span></div>
+      <div class="hero-stat"><strong>200+</strong><span>Weddings Shot</span></div>
+      <div class="hero-stat"><strong>12</strong><span>Expert Guides</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- FILTER BAR -->
+<div class="filter-bar">
+  <button class="filter-btn active" onclick="filterPosts(this,'all')">All Posts</button>
+  <button class="filter-btn" onclick="filterPosts(this,'real-wedding')">Real Weddings</button>
+  <button class="filter-btn" onclick="filterPosts(this,'planning-guide')">Planning Guides</button>
+  <button class="filter-btn" onclick="filterPosts(this,'tips')">Tips &amp; Advice</button>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="blog-layout">
+
+  <!-- Posts Column -->
+  <div>
+
+    <!-- Featured Post -->
+    <div class="blog-featured fade-up" data-cat="real-wedding">
+      <div class="blog-featured-img">
+        <span class="blog-cat">Featured</span>
+        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=900&q=80" alt="Priya and Raj Hindu Wedding at Syon House London">
+      </div>
+      <div class="blog-featured-body">
+        <span class="featured-label">&#9733; &nbsp;Featured Story</span>
+        <div class="blog-meta">
+          <span class="blog-date">12 March 2026</span>
+          <span class="blog-meta-dot">&#9632;</span>
+          <span class="blog-read">8 min read</span>
+        </div>
+        <h3>Priya &amp; Raj's Golden Hindu Wedding at Syon House</h3>
+        <p class="featured-excerpt">From a magical Mehendi evening bathed in marigold light to a Vidaai that moved every guest to tears, Priya and Raj's celebration at Syon House was everything a luxury Hindu wedding should be.</p>
+        <a href="post-priya-raj.html" class="blog-link">Read the Full Story &rarr;</a>
+      </div>
+    </div>
+
+    <!-- Posts Grid -->
+    <div class="blog-grid" id="blogGrid">
+
+      <article class="blog-card fade-up delay-1" data-cat="planning-guide" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Planning Guide</span>
+          <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=600&q=80" alt="How to choose a wedding photographer in London" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2026-02-20" itemprop="datePublished">20 February 2026</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">5 min read</span>
+          </div>
+          <h3 itemprop="headline">How to Choose the Right Wedding Photographer in London</h3>
+          <p itemprop="description">Portfolio style, personality fit, package transparency — here are the seven questions every couple should ask before booking.</p>
+          <a href="post-choose-photographer.html" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="blog-card fade-up delay-2" data-cat="real-wedding" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Real Wedding</span>
+          <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=600&q=80" alt="Navneet and Kaur Sikh Anand Karaj wedding photography" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2026-01-15" itemprop="datePublished">15 January 2026</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">6 min read</span>
+          </div>
+          <h3 itemprop="headline">Navneet &amp; Kaur: A Sikh Anand Karaj at Gravesend Gurdwara</h3>
+          <p itemprop="description">The soft morning light through the Gurdwara windows, a bride dressed in deep crimson — reverence meets creativity.</p>
+          <a href="post-navneet-kaur.html" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="blog-card fade-up delay-3" data-cat="tips" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Tips &amp; Advice</span>
+          <img src="https://images.unsplash.com/photo-1460978812857-470ed1c77af0?auto=format&fit=crop&w=600&q=80" alt="Pre-wedding shoot locations near London UK" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2025-12-05" itemprop="datePublished">5 December 2025</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">4 min read</span>
+          </div>
+          <h3 itemprop="headline">5 Stunning Pre-Wedding Shoot Locations Near London</h3>
+          <p itemprop="description">From the rolling Surrey Hills to Kew Gardens in bloom — our favourite spots for romantic pre-wedding sessions.</p>
+          <a href="post-prewedding-locations.html" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="blog-card fade-up delay-1" data-cat="planning-guide" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Planning Guide</span>
+          <img src="https://images.unsplash.com/photo-1544078751-58fee2d8a03b?auto=format&fit=crop&w=600&q=80" alt="Indian wedding timeline photography tips" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2025-11-10" itemprop="datePublished">10 November 2025</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">7 min read</span>
+          </div>
+          <h3 itemprop="headline">The Perfect Photography Timeline for a Two-Day Indian Wedding</h3>
+          <p itemprop="description">Managing Mehendi, Sangeet, Baraat and the main ceremony — how to schedule your photographer to capture every moment.</p>
+          <a href="#" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="blog-card fade-up delay-2" data-cat="real-wedding" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Real Wedding</span>
+          <img src="https://images.unsplash.com/photo-1465495976277-4387d4b0b4c6?auto=format&fit=crop&w=600&q=80" alt="Muslim Nikah wedding ceremony photography London" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2025-10-18" itemprop="datePublished">18 October 2025</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">5 min read</span>
+          </div>
+          <h3 itemprop="headline">Fatima &amp; Amir: An Intimate Nikah at The Landmark London</h3>
+          <p itemprop="description">A story of elegant simplicity — how a beautifully understated Muslim wedding can produce the most timeless photographs.</p>
+          <a href="#" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+      <article class="blog-card fade-up delay-3" data-cat="tips" itemscope itemtype="https://schema.org/BlogPosting">
+        <div class="blog-card-img">
+          <span class="blog-cat">Tips &amp; Advice</span>
+          <img src="https://images.unsplash.com/photo-1606216794074-735e91aa2c92?auto=format&fit=crop&w=600&q=80" alt="Wedding photography lighting tips golden hour" itemprop="image">
+        </div>
+        <div class="blog-card-body">
+          <div class="blog-meta">
+            <time class="blog-date" datetime="2025-09-22" itemprop="datePublished">22 September 2025</time>
+            <span class="blog-meta-dot">&#9632;</span>
+            <span class="blog-read">3 min read</span>
+          </div>
+          <h3 itemprop="headline">Why Golden Hour Is the Best Time for Your Wedding Portraits</h3>
+          <p itemprop="description">The science and magic behind the last hour of daylight — and how to plan your wedding schedule around it for stunning portraits.</p>
+          <a href="#" class="blog-link" itemprop="url">Read More &rarr;</a>
+        </div>
+      </article>
+
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination">
+      <button class="page-btn active">1</button>
+      <button class="page-btn">2</button>
+      <button class="page-btn">3</button>
+      <button class="page-btn">&rsaquo;</button>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+
+    <div class="sidebar-box">
+      <h4>Subscribe to Our Journal</h4>
+      <p>Real weddings, planning tips and behind-the-scenes stories — delivered to your inbox monthly.</p>
+      <input type="email" class="sidebar-input" placeholder="your@email.com">
+      <button class="btn-primary" onclick="alert('Thank you for subscribing!')">Subscribe</button>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Categories</h4>
+      <ul class="cat-list">
+        <li><a href="#" onclick="filterPosts(document.querySelector('[onclick*=real-wedding]'),'real-wedding');return false">Real Weddings <span>12</span></a></li>
+        <li><a href="#" onclick="filterPosts(document.querySelector('[onclick*=planning-guide]'),'planning-guide');return false">Planning Guides <span>8</span></a></li>
+        <li><a href="#" onclick="filterPosts(document.querySelector('[onclick*=tips]'),'tips');return false">Tips &amp; Advice <span>6</span></a></li>
+        <li><a href="#">Venue Features <span>4</span></a></li>
+        <li><a href="#">Behind the Lens <span>3</span></a></li>
+      </ul>
+    </div>
+
+    <div class="sidebar-box">
+      <h4>Recent Posts</h4>
+      <div class="recent-post">
+        <img src="https://images.unsplash.com/photo-1522673607200-164d1b6ce486?auto=format&fit=crop&w=120&q=70" alt="Priya and Raj Wedding">
+        <div class="recent-post-info"><h5><a href="post-priya-raj.html">Priya &amp; Raj's Golden Hindu Wedding</a></h5><span>12 March 2026</span></div>
+      </div>
+      <div class="recent-post">
+        <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&w=120&q=70" alt="Choose Photographer">
+        <div class="recent-post-info"><h5><a href="post-choose-photographer.html">How to Choose the Right Photographer</a></h5><span>20 February 2026</span></div>
+      </div>
+      <div class="recent-post">
+        <img src="https://images.unsplash.com/photo-1591604466107-ec97de577aff?auto=format&fit=crop&w=120&q=70" alt="Navneet and Kaur">
+        <div class="recent-post-info"><h5><a href="post-navneet-kaur.html">Navneet &amp; Kaur: Sikh Anand Karaj</a></h5><span>15 January 2026</span></div>
+      </div>
+    </div>
+
+    <div class="sidebar-box sidebar-cta">
+      <h4>Book a Consultation</h4>
+      <p>Ready to discuss your wedding day? We'd love to hear all about your plans and how we can capture them.</p>
+      <a href="index.html#contact" class="btn-primary">Get in Touch</a>
+    </div>
+
+  </aside>
+</div>
+
+<div class="insta-bar">
+  <a href="https://www.instagram.com/hestonphoto/" target="_blank">Follow @HestonPhoto on Instagram</a>
+  <p>See our latest work and behind-the-scenes</p>
+</div>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand"><span class="f-logo">Heston<span>Photo</span></span><p>Award-winning luxury Indian and Asian wedding photographers based in Ruislip, London. Capturing your wedding story beautifully, stylishly, and creatively across the UK and worldwide.</p></div>
+    <div class="footer-col"><h4>Explore</h4><a href="index.html#about">About Us</a><a href="index.html#portfolio">Portfolio</a><a href="index.html#investment">Your Investment</a><a href="index.html#testimonials">Testimonials</a><a href="index.html#faq">FAQ</a><a href="blog.html">Blog</a><a href="#">Client Area</a></div>
+    <div class="footer-col"><h4>Portfolio</h4><a href="#">Indian Asian Weddings</a><a href="#">Sikh Weddings</a><a href="#">English Weddings</a><a href="#">Pre-Wedding Gallery</a><a href="#">Family &amp; Lifestyle</a></div>
+    <div class="footer-col"><h4>Popular Venues</h4><a href="#">Syon House</a><a href="#">Oshwal Centre</a><a href="#">Moor Park Golf Club</a><a href="#">Meridian Grand</a><a href="#">The Great Barn</a><a href="#">Offley Place</a></div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2026 Heston Photo. All rights reserved. Ruislip, London.</span>
+    <span><a href="https://www.instagram.com/hestonphoto/" style="color:var(--gold)">Instagram</a> &nbsp;&middot;&nbsp; <a href="#">Facebook</a> &nbsp;&middot;&nbsp; <a href="#">Privacy Policy</a></span>
+  </div>
+</footer>
+
+<script>
+function filterPosts(btn, cat) {
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  if (btn && btn.classList) btn.classList.add('active');
+
+  document.querySelectorAll('#blogGrid .blog-card').forEach(card => {
+    if (cat === 'all' || card.dataset.cat === cat) {
+      card.style.display = '';
+      card.style.animation = 'fadeUp .5s ease both';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+
+  const featured = document.querySelector('.blog-featured');
+  if (featured) {
+    if (cat === 'all' || featured.dataset.cat === cat) {
+      featured.style.display = '';
+      featured.style.animation = 'fadeUp .5s ease both';
+    } else {
+      featured.style.display = 'none';
+    }
+  }
+}
+
+// Scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.style.animationPlayState = 'running';
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.fade-up').forEach(el => {
+  el.style.animationPlayState = 'paused';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>

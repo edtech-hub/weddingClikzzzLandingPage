@@ -1356,7 +1356,7 @@
                     <li><a href="wedding-photography.html">Weddings</a></li>
                     <li><a href="pre-wedding-shoots.html">Pre-Wedding</a></li>
                     <li><a href="index.html#about">About</a></li>
-                    <li><a href="index.html#contact" class="nav-cta">Enquire</a></li>
+                    <li><a href="index.html?service=prewedding&subject=Pre-Wedding%20Shoot%20Enquiry#contact" class="nav-cta">Enquire</a></li>
                 </ul>
             </nav>
             <div class="mobile-menu-toggle" id="mobileMenuToggle">
@@ -1376,7 +1376,7 @@
             <h1 data-aos="fade-up" data-aos-delay="420" data-aos-duration="1100">Pre-Wedding <em>Shoots</em></h1>
             <p class="tagline" data-aos="fade-up" data-aos-delay="650" data-aos-duration="1000">A relaxed yet professional photoshoot of the couple, prior to your special day — keepsakes that document the journey before the celebration.</p>
             <div class="cta-row" data-aos="fade-up" data-aos-delay="880" data-aos-duration="800">
-                <a href="index.html#contact" class="btn btn-primary">
+                <a href="index.html?service=prewedding&subject=Pre-Wedding%20Shoot%20Enquiry&message=I%27d%20love%20to%20plan%20a%20pre-wedding%20shoot.%20Please%20share%20availability%20and%20packages.#contact" class="btn btn-primary">
                     Plan Your Shoot
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                 </a>
@@ -1442,7 +1442,7 @@
                             High-res images on a private, password-protected gallery
                         </li>
                     </ul>
-                    <a href="index.html#contact" class="package-cta">
+                    <a href="index.html?service=prewedding&package=The%20London%20Shoot&price=%C2%A3399&subject=Pre-Wedding%20Package%20Enquiry&message=I%27d%20like%20to%20book%20The%20London%20Shoot%20package%20(%C2%A3399%20%E2%80%94%202-Hour%20Shoot%20%C2%B7%20London).%20Please%20share%20availability%20and%20next%20steps.#contact" class="package-cta">
                         Book This Package
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
@@ -1481,13 +1481,13 @@
                             Travel arranged worldwide (couple covers travel)
                         </li>
                     </ul>
-                    <a href="index.html#contact" class="package-cta">
+                    <a href="index.html?service=prewedding&package=The%20Half-Day%20Shoot&price=%C2%A3899&subject=Pre-Wedding%20Package%20Enquiry&message=I%27d%20like%20to%20book%20The%20Half-Day%20Shoot%20package%20(%C2%A3899%20%E2%80%94%20Half-Day%20%C2%B7%20UK%20or%20Abroad).%20Please%20share%20availability%20and%20next%20steps.#contact" class="package-cta">
                         Book This Package
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
                     </a>
                 </div>
             </div>
-            <p class="package-note" data-aos="fade-up" id="pwPackagesNote">Shoots typically take place on weekdays — exceptions on request. Looking for cinematography or a custom concept? <a href="index.html#contact" style="color: var(--gold-dark); text-decoration: underline;">Tell us about it</a>.</p>
+            <p class="package-note" data-aos="fade-up" id="pwPackagesNote">Shoots typically take place on weekdays — exceptions on request. Looking for cinematography or a custom concept? <a href="index.html?service=prewedding&subject=Custom%20Pre-Wedding%20Concept&message=I%27d%20love%20to%20discuss%20a%20bespoke%20pre-wedding%20concept.%20Here%27s%20what%20I%27m%20thinking%3A%20%0A%0A" style="color: var(--gold-dark); text-decoration: underline;">Tell us about it</a>.</p>
         </div>
     </section>
 
@@ -1863,7 +1863,20 @@
                     </li>`).join('');
                 const priceLabel = p.priceLabel ? `<small>${escapeAttr(p.priceLabel)}</small>` : '';
                 const ctaText = p.ctaText || 'Book This Package';
-                const ctaUrl = p.ctaUrl || 'index.html#contact';
+                // Build a prefilled URL unless an explicit one is set
+                let ctaUrl;
+                if (p.ctaUrl && p.ctaUrl !== 'index.html#contact' && p.ctaUrl !== '#contact') {
+                    ctaUrl = p.ctaUrl;
+                } else {
+                    const qs = new URLSearchParams();
+                    qs.set('service', 'prewedding');
+                    if (p.title) qs.set('package', p.title);
+                    if (p.price) qs.set('price', p.price + (p.priceLabel ? ' — ' + p.priceLabel : ''));
+                    qs.set('subject', 'Pre-Wedding Package Enquiry');
+                    const msgParts = [`I'd like to book the ${p.title || 'pre-wedding'} package${p.price ? ' (' + p.price + ')' : ''}.`, 'Please share availability and next steps.'];
+                    qs.set('message', msgParts.join(' '));
+                    ctaUrl = 'index.html?' + qs.toString() + '#contact';
+                }
                 return `
                 <div class="package-card${featuredCls}" data-aos="fade-up" data-aos-delay="${100 + i * 100}">
                     ${badge}

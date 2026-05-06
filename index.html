@@ -6612,7 +6612,11 @@
             if (t.includes('wedding photography') || (b === 'photography' && t.includes('wedding'))) {
                 return 'wedding-photography.html';
             }
-            return '#contact';
+            // Otherwise route to contact form with the service name pre-filled in the message
+            const qs = new URLSearchParams();
+            qs.set('subject', (title || 'Service Enquiry'));
+            qs.set('message', `I'd like to enquire about ${title || 'your services'}. Please share more details.`);
+            return 'index.html?' + qs.toString() + '#contact';
         }
 
         function renderDefaultServices() {
@@ -7273,6 +7277,71 @@
         // Contact form submission
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
+            // Prefill from URL query params (e.g. ?service=prewedding&message=...&subject=...)
+            (function prefillContactForm() {
+                try {
+                    const params = new URLSearchParams(window.location.search);
+                    if (![...params.keys()].length) return;
+
+                    const setVal = (name, val) => {
+                        const el = contactForm.querySelector(`[name="${name}"]`);
+                        if (el && val != null && val !== '') el.value = val;
+                    };
+
+                    setVal('name', params.get('name'));
+                    setVal('email', params.get('email'));
+                    setVal('phone', params.get('phone'));
+                    setVal('date', params.get('date'));
+                    setVal('location', params.get('location'));
+
+                    // Service: match the closest <option> value
+                    const service = params.get('service');
+                    if (service) {
+                        const select = contactForm.querySelector('[name="service"]');
+                        if (select) {
+                            const v = service.toLowerCase();
+                            const match = Array.from(select.options).find(o =>
+                                o.value.toLowerCase() === v || o.textContent.toLowerCase().includes(v)
+                            );
+                            if (match) select.value = match.value;
+                        }
+                    }
+
+                    // Message: combine subject + message + package details into the textarea
+                    const subject = params.get('subject');
+                    const pkg = params.get('package');
+                    const price = params.get('price');
+                    const message = params.get('message');
+                    const lines = [];
+                    if (subject) lines.push(`Enquiry: ${subject}`);
+                    if (pkg) lines.push(`Package: ${pkg}${price ? ` (${price})` : ''}`);
+                    if (message) {
+                        if (lines.length) lines.push('');
+                        lines.push(message);
+                    }
+                    if (lines.length) {
+                        const ta = contactForm.querySelector('[name="message"]');
+                        if (ta) ta.value = lines.join('\n');
+                    }
+
+                    // Smoothly scroll to contact section after a short delay (lets layout settle)
+                    if (window.location.hash === '#contact') {
+                        setTimeout(() => {
+                            const sec = document.getElementById('contact');
+                            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            // Focus first empty field for nice UX
+                            const firstEmpty = contactForm.querySelector('input:not([value]), input[value=""]');
+                            if (firstEmpty) try { firstEmpty.focus({ preventScroll: true }); } catch(e) {}
+                        }, 600);
+                    }
+
+                    // Clean URL (remove query) so re-shares don't carry stale data
+                    if (window.history && window.history.replaceState) {
+                        window.history.replaceState({}, '', window.location.pathname + window.location.hash);
+                    }
+                } catch (e) { console.log('Contact prefill skipped:', e); }
+            })();
+
             contactForm.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 

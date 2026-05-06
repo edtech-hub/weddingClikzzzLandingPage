@@ -7274,6 +7274,27 @@
             });
         }
 
+        // ---- Anchor scroll fixer (handles lazy-loaded layout shifts) ----
+        // When the URL contains a hash like #contact, the browser scrolls immediately
+        // but lazy-loaded sections above can push it off-target. We re-anchor after
+        // content settles so the user lands on the actual section.
+        (function fixHashScroll() {
+            const hash = window.location.hash;
+            if (!hash || hash.length < 2) return;
+            const targetId = hash.slice(1).split('?')[0];
+            const scrollToTarget = () => {
+                const el = document.getElementById(targetId);
+                if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            };
+            // Re-scroll several times as lazy content loads in
+            window.addEventListener('load', () => {
+                scrollToTarget();
+                setTimeout(scrollToTarget, 400);
+                setTimeout(scrollToTarget, 1200);
+                setTimeout(scrollToTarget, 2500);
+            });
+        })();
+
         // Contact form submission
         const contactForm = document.getElementById('contactForm');
         if (contactForm) {
@@ -7322,17 +7343,6 @@
                     if (lines.length) {
                         const ta = contactForm.querySelector('[name="message"]');
                         if (ta) ta.value = lines.join('\n');
-                    }
-
-                    // Smoothly scroll to contact section after a short delay (lets layout settle)
-                    if (window.location.hash === '#contact') {
-                        setTimeout(() => {
-                            const sec = document.getElementById('contact');
-                            if (sec) sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                            // Focus first empty field for nice UX
-                            const firstEmpty = contactForm.querySelector('input:not([value]), input[value=""]');
-                            if (firstEmpty) try { firstEmpty.focus({ preventScroll: true }); } catch(e) {}
-                        }, 600);
                     }
 
                     // Clean URL (remove query) so re-shares don't carry stale data

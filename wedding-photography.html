@@ -42,6 +42,41 @@
     <!-- Preconnect -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://hestonadminapi.edastra.in" crossorigin>
+
+    <!-- Preload hero background image so it appears with first paint -->
+    <link rel="preload" as="image" id="heroPreload" href="https://images.unsplash.com/photo-1519741497674-611481863552?w=1920&h=1080&fit=crop" fetchpriority="high">
+
+    <!-- Inline hero URL early: apply cached admin-supplied URL before first paint, and prefetch latest -->
+    <script>
+        (function() {
+            try {
+                var cached = localStorage.getItem('wpHeroImageUrl');
+                if (cached) {
+                    // Inject CSS variable before .page-hero ever renders
+                    var styleEl = document.createElement('style');
+                    styleEl.textContent = '.page-hero{--hero-bg-image:url("' + cached.replace(/"/g, '%22') + '")}';
+                    document.head.appendChild(styleEl);
+                    var pre = document.getElementById('heroPreload');
+                    if (pre) pre.href = cached;
+                }
+            } catch (e) {}
+            // Fire API early (in head, parallel with fonts) so non-cached visitors still get the dynamic URL ASAP
+            var isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            var API = isLocal ? 'http://localhost:3000' : 'https://hestonadminapi.edastra.in';
+            window.__wpHeroPromise = fetch(API + '/api/website/weddingPhotography')
+                .then(function(r) { return r.json(); })
+                .then(function(result) {
+                    if (!result || !result.success || !result.data || !result.data.weddingPhotography) return null;
+                    var wp = result.data.weddingPhotography;
+                    if (wp.heroImageUrl) {
+                        try { localStorage.setItem('wpHeroImageUrl', wp.heroImageUrl); } catch (e) {}
+                    }
+                    return wp;
+                })
+                .catch(function() { return null; });
+        })();
+    </script>
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
@@ -697,7 +732,8 @@
         /* Responsive */
         @media (max-width: 968px) {
             section.page-section { padding: 4.5rem 1.5rem; }
-            .intro-grid { grid-template-columns: 1fr; gap: 3rem; }
+            .intro-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+            .intro-image img { width: 100%; max-width: 460px; }
             .footer-grid { grid-template-columns: 1fr 1fr; gap: 2.5rem; }
             .footer-bottom { flex-direction: column; gap: 1rem; text-align: center; }
         }
@@ -717,19 +753,319 @@
                 transition: transform 0.4s ease;
             }
             nav.active { transform: translateX(0); }
-            nav ul { flex-direction: column; gap: 2rem; text-align: center; }
+            nav ul { flex-direction: column; gap: 1.75rem; text-align: center; }
             nav a { font-size: 1rem; }
-            .page-hero { min-height: 70vh; padding: 7rem 1.25rem 3rem; }
-            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; }
+            section.page-section { padding: 4rem 1.25rem; }
+            .section-header { margin-bottom: 2.5rem; }
+            .page-hero {
+                min-height: 78vh;
+                min-height: 78dvh;
+                padding: 7rem 1.25rem 3rem;
+            }
+            .page-hero .tagline { font-size: 1rem; margin-bottom: 2rem; }
+            .page-hero .cta-row { gap: 0.75rem; }
+            .intro-content p { font-size: 0.95rem; line-height: 1.8; }
+            .coverage-grid { gap: 1rem; }
+            .coverage-card { padding: 2rem 1.5rem; border-radius: 14px; }
+            .approach-grid { gap: 1.25rem; }
+            .approach-step { padding: 1.5rem 1rem; }
+            .approach-step .step-number { font-size: 3rem; }
+            .spec-card { height: 320px; }
+            .spec-card .spec-overlay { padding: 1.5rem 1.25rem; }
+            .spec-card h3 { font-size: 1.4rem; }
+            .venues-list { gap: 0.6rem; }
+            .venue-pill { padding: 0.6rem 1.1rem; font-size: 0.78rem; }
+            .faq-q { padding: 1.25rem 1.25rem; font-size: 1.1rem; }
+            .faq-item.active .faq-a { padding: 0 1.25rem 1.25rem; }
+            .faq-a { font-size: 0.9rem; }
+            .footer-grid { grid-template-columns: 1fr 1fr; gap: 2rem; padding-bottom: 3rem; margin-bottom: 3rem; }
             .footer-brand { grid-column: span 2; }
         }
         @media (max-width: 480px) {
-            section.page-section { padding: 3.5rem 1rem; }
+            section.page-section { padding: 3rem 1rem; }
+            .section-header { margin-bottom: 2rem; }
             .header-container { padding: 0 1.25rem; }
             .logo h1 { font-size: 1.2rem; }
             .logo-img { height: 40px; }
-            .page-hero .cta-row { flex-direction: column; align-items: stretch; }
-            .btn { justify-content: center; }
+            .page-hero {
+                min-height: 72vh;
+                min-height: 72dvh;
+                padding: 6rem 1rem 2.5rem;
+            }
+            .page-hero h1 { font-size: clamp(2rem, 9vw, 2.6rem); margin-bottom: 1rem; }
+            .page-hero .tagline { font-size: 0.95rem; margin-bottom: 1.75rem; }
+            .page-hero .breadcrumb { font-size: 0.65rem; margin-bottom: 1rem; }
+            .page-hero .cta-row { flex-direction: column; align-items: stretch; gap: 0.7rem; }
+            .btn { justify-content: center; padding: 0.9rem 1.5rem; font-size: 0.75rem; }
+            footer { padding: 3.5rem 1.25rem 1.5rem; }
+            .footer-grid { grid-template-columns: 1fr; gap: 2rem; padding-bottom: 2.5rem; margin-bottom: 2rem; }
+            .footer-brand { grid-column: span 1; }
+            .footer-grid .footer-links h4,
+            .footer-grid .footer-newsletter h4 { margin-bottom: 1rem; }
+            .newsletter-form { flex-direction: row; }
+            .spec-card { height: 280px; }
+            .spec-card h3 { font-size: 1.25rem; }
+            .spec-card p { font-size: 0.8rem; }
+            .coverage-card h3 { font-size: 1.2rem; }
+            .approach-step .step-number { font-size: 2.5rem; }
+            .approach-step h3 { font-size: 1.2rem; }
+            .intro-content p { font-size: 0.9rem; }
+            .footer-legal { flex-direction: column; gap: 0.75rem; }
+        }
+        @media (max-width: 360px) {
+            .page-hero h1 { font-size: 1.85rem; }
+            .page-hero .tagline { font-size: 0.88rem; }
+            .logo h1 { font-size: 1.05rem; }
+            .logo-img { height: 34px; }
+            .section-title { font-size: 1.6rem; }
+            .spec-card { height: 240px; }
+        }
+
+        /* ===== Wedding Archives ===== */
+        .archives-section { background: var(--cream); }
+        .archives-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 280px;
+            gap: 1rem;
+        }
+        .archive-item {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            background: var(--charcoal);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            transition: transform 0.4s ease, box-shadow 0.4s ease;
+        }
+        .archive-item:hover { transform: translateY(-4px); box-shadow: 0 18px 40px rgba(0,0,0,0.15); }
+        .archive-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+        .archive-item:hover img { transform: scale(1.06); }
+        .archive-item .archive-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(180deg, transparent 50%, rgba(0,0,0,0.85) 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            padding: 1.5rem 1.25rem;
+            color: var(--white);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .archive-item:hover .archive-overlay { opacity: 1; }
+        .archive-item .archive-overlay h4 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            color: var(--white);
+            margin-bottom: 0.25rem;
+        }
+        .archive-item .archive-overlay span {
+            font-size: 0.78rem;
+            color: var(--gold-light);
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+        }
+        .archive-item.has-gallery::after {
+            content: '';
+            position: absolute;
+            top: 12px; right: 12px;
+            width: 36px; height: 36px;
+            border-radius: 50%;
+            background: rgba(0,0,0,0.55) url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23C9A87C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><circle cx='12' cy='12' r='3'/><path d='M2 12s3-7 10-7 10 7 10 7-3 7-10 7S2 12 2 12z'/></svg>") center/18px no-repeat;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .archive-item.has-gallery:hover::after { opacity: 1; }
+        /* Featured layout for first 6 items */
+        .archive-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
+        .archive-item:nth-child(6) { grid-column: span 2; }
+        .archives-empty {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+            font-style: italic;
+        }
+        .archives-loading {
+            text-align: center;
+            padding: 3rem 1rem;
+        }
+        .archives-loading-spinner {
+            display: inline-block;
+            width: 40px; height: 40px;
+            border: 3px solid rgba(201, 168, 124, 0.2);
+            border-top-color: var(--gold);
+            border-radius: 50%;
+            animation: archSpin 0.8s linear infinite;
+        }
+        @keyframes archSpin { to { transform: rotate(360deg); } }
+
+        @media (max-width: 968px) {
+            .archives-grid { grid-template-columns: repeat(2, 1fr); grid-auto-rows: 240px; }
+            .archive-item:nth-child(1) { grid-column: span 2; grid-row: span 1; }
+            .archive-item:nth-child(6) { grid-column: span 2; }
+        }
+        @media (max-width: 580px) {
+            .archives-grid { grid-template-columns: 1fr; grid-auto-rows: 260px; gap: 0.75rem; }
+            .archive-item:nth-child(1),
+            .archive-item:nth-child(6) { grid-column: span 1; }
+            .archive-item .archive-overlay { opacity: 1; background: linear-gradient(180deg, transparent 40%, rgba(0,0,0,0.85) 100%); }
+        }
+
+        /* Lightbox modal */
+        .gallery-lightbox {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(10, 10, 10, 0.97);
+            z-index: 9999;
+            overflow-y: auto;
+            padding: 5rem 1.5rem 2rem;
+        }
+        .gallery-lightbox.active { display: block; animation: lbFade 0.3s ease; }
+        @keyframes lbFade { from { opacity: 0; } to { opacity: 1; } }
+        .lightbox-close {
+            position: fixed;
+            top: 1.25rem; right: 1.25rem;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            font-size: 1.6rem;
+            cursor: pointer;
+            z-index: 10001;
+            transition: all 0.3s ease;
+        }
+        .lightbox-close:hover { background: var(--gold); border-color: var(--gold); color: var(--charcoal); }
+        .lightbox-header {
+            text-align: center;
+            color: var(--white);
+            margin-bottom: 2rem;
+            max-width: 1200px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        .lightbox-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+            color: var(--white);
+            font-weight: 400;
+        }
+        .lightbox-header p {
+            color: var(--gold-light);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            margin-top: 0.5rem;
+        }
+        .lightbox-gallery {
+            max-width: 1300px;
+            margin: 0 auto;
+            display: flex;
+            gap: 0.75rem;
+            align-items: flex-start;
+        }
+        .lightbox-col {
+            flex: 1 1 0;
+            min-width: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        @media (max-width: 480px) { .gallery-lightbox { padding: 4rem 0.75rem 1rem; } }
+        .lightbox-gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            cursor: pointer;
+            background: var(--charcoal);
+            display: block;
+            width: 100%;
+        }
+        .lightbox-gallery-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+            transition: transform 0.5s ease;
+        }
+        .lightbox-gallery-item:hover img { transform: scale(1.05); }
+        .lightbox-empty {
+            text-align: center;
+            color: rgba(255,255,255,0.6);
+            padding: 3rem 1rem;
+        }
+
+        /* Fullscreen viewer */
+        .fullscreen-viewer {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.98);
+            z-index: 10001;
+            align-items: center;
+            justify-content: center;
+        }
+        .fullscreen-viewer.active { display: flex; animation: lbFade 0.3s ease; }
+        .fullscreen-viewer-image {
+            max-width: 92vw;
+            max-height: 88vh;
+            object-fit: contain;
+            border-radius: 4px;
+        }
+        .fullscreen-close {
+            position: absolute;
+            top: 1.25rem; right: 1.25rem;
+            width: 44px; height: 44px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            font-size: 1.6rem;
+            cursor: pointer;
+        }
+        .fullscreen-close:hover { background: var(--gold); border-color: var(--gold); color: var(--charcoal); }
+        .fullscreen-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px; height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--white);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+        }
+        .fullscreen-nav:hover:not(:disabled) { background: var(--gold); border-color: var(--gold); color: var(--charcoal); }
+        .fullscreen-nav:disabled { opacity: 0.3; cursor: not-allowed; }
+        .fullscreen-nav svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; }
+        .fullscreen-prev { left: 1.5rem; }
+        .fullscreen-next { right: 1.5rem; }
+        .fullscreen-counter {
+            position: absolute;
+            bottom: 1.5rem;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255,255,255,0.7);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            background: rgba(0,0,0,0.5);
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+        }
+        @media (max-width: 480px) {
+            .fullscreen-prev { left: 0.5rem; }
+            .fullscreen-next { right: 0.5rem; }
+            .fullscreen-nav { width: 40px; height: 40px; }
         }
     </style>
 </head>
@@ -850,6 +1186,45 @@
             </div>
         </div>
     </section>
+
+    <!-- Wedding Archives -->
+    <section class="page-section archives-section" id="weddingArchives" aria-label="Recent Wedding Photography">
+        <div class="section-container">
+            <div class="section-header" data-aos="fade-up">
+                <span class="section-label">Recent Work</span>
+                <h2 class="section-title">Wedding <em>Archives</em></h2>
+                <p class="section-subtitle">A curated selection of recent celebrations — each gallery a love story photographed with care.</p>
+            </div>
+            <div class="archives-grid" id="wpArchivesGrid">
+                <div class="archives-loading" style="grid-column: 1 / -1;">
+                    <div class="archives-loading-spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Archives Lightbox -->
+    <div class="gallery-lightbox" id="wpLightbox" role="dialog" aria-modal="true" aria-label="Wedding gallery">
+        <button class="lightbox-close" onclick="closeWPLightbox()" aria-label="Close gallery">&times;</button>
+        <div class="lightbox-header">
+            <h3 id="wpLightboxTitle">Couple Name</h3>
+            <p id="wpLightboxPlace">Wedding Place</p>
+        </div>
+        <div class="lightbox-gallery" id="wpLightboxGallery"></div>
+    </div>
+
+    <!-- Archives Fullscreen Viewer -->
+    <div class="fullscreen-viewer" id="wpFullscreenViewer">
+        <button class="fullscreen-close" onclick="closeWPFullscreen()" aria-label="Close fullscreen">&times;</button>
+        <button class="fullscreen-nav fullscreen-prev" onclick="navigateWPFullscreen(-1)" aria-label="Previous image">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg>
+        </button>
+        <img class="fullscreen-viewer-image" id="wpFullscreenImage" src="" alt="Fullscreen view">
+        <button class="fullscreen-nav fullscreen-next" onclick="navigateWPFullscreen(1)" aria-label="Next image">
+            <svg viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+        </button>
+        <div class="fullscreen-counter" id="wpFullscreenCounter">1 / 1</div>
+    </div>
 
     <!-- Featured Venues -->
     <section class="page-section venues-section">
@@ -1055,11 +1430,200 @@
         });
 
         // ============================================
-        // Dynamic content loading from admin API
+        // Define API endpoint early (before archives loader)
         // ============================================
         const isLocalhost = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
         const API_BASE_URL = isLocalhost ? 'http://localhost:3000' : 'https://hestonadminapi.edastra.in';
 
+        // ============================================
+        // Wedding Archives loader + Lightbox
+        // ============================================
+        let wpArchivesData = [];
+        let wpCurrentImages = [];
+        let wpFullscreenIndex = 0;
+
+        function escapeHtml(s) {
+            return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+        }
+
+        // Masonry helpers (row-major distribution -> left-to-right reading order)
+        function wpGetMasonryColumnCount() {
+            const w = window.innerWidth;
+            if (w <= 480) return 1;
+            if (w <= 768) return 2;
+            return 3;
+        }
+        function wpBuildMasonryHtml(itemHtmlList, columnCount) {
+            const cols = Array.from({ length: columnCount }, () => []);
+            itemHtmlList.forEach((html, idx) => { cols[idx % columnCount].push(html); });
+            return cols.map(c => `<div class="lightbox-col">${c.join('')}</div>`).join('');
+        }
+
+        async function loadWeddingArchives() {
+            const grid = document.getElementById('wpArchivesGrid');
+            if (!grid) return;
+            try {
+                const res = await fetch(`${API_BASE_URL}/api/website/archives`);
+                const result = await res.json();
+                const entries = (result && result.success && result.data && result.data.archives && result.data.archives.entries) || [];
+                wpArchivesData = entries;
+                renderWPArchives(entries);
+            } catch (err) {
+                console.log('Archives failed to load:', err.message);
+                grid.innerHTML = '<div class="archives-empty" style="grid-column: 1 / -1;">Unable to load wedding archives at the moment.</div>';
+            }
+        }
+
+        function renderWPArchives(entries) {
+            const grid = document.getElementById('wpArchivesGrid');
+            if (!grid) return;
+            if (!entries || entries.length === 0) {
+                grid.innerHTML = '<div class="archives-empty" style="grid-column: 1 / -1;">New wedding stories coming soon.</div>';
+                return;
+            }
+            // Show up to 12 entries to keep page focused
+            const list = entries.slice(0, 12);
+            grid.innerHTML = list.map((entry, index) => {
+                const hasGallery = entry.galleryImages && entry.galleryImages.length > 0;
+                const cover = entry.coverImageUrl || (hasGallery ? entry.galleryImages[0].imageUrl : '');
+                return `
+                    <div class="archive-item ${hasGallery ? 'has-gallery' : ''}" data-aos="fade-up" data-aos-delay="${50 + index * 50}" ${hasGallery ? `onclick="openWPLightbox('${entry._id}')"` : ''}>
+                        <img src="${escapeHtml(cover)}" alt="${escapeHtml(entry.coupleName || 'Wedding')}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1519741497674-611481863552?w=800&h=600&fit=crop'">
+                        <div class="archive-overlay">
+                            <h4>${escapeHtml(entry.coupleName || '')}</h4>
+                            <span>${escapeHtml(entry.weddingPlace || '')}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            if (typeof AOS !== 'undefined') AOS.refresh();
+        }
+
+        function openWPLightbox(entryId) {
+            const entry = wpArchivesData.find(e => e._id === entryId);
+            if (!entry) return;
+            document.getElementById('wpLightboxTitle').textContent = entry.coupleName || '';
+            document.getElementById('wpLightboxPlace').textContent = entry.weddingPlace || '';
+            const galleryEl = document.getElementById('wpLightboxGallery');
+            if (!entry.galleryImages || entry.galleryImages.length === 0) {
+                wpCurrentImages = [];
+                galleryEl.innerHTML = '<div class="lightbox-empty" style="grid-column: 1 / -1;">No gallery images available.</div>';
+            } else {
+                wpCurrentImages = entry.galleryImages.map(img => img.imageUrl);
+                const itemsHtml = entry.galleryImages.map((img, i) => `
+                    <div class="lightbox-gallery-item" onclick="openWPFullscreen(${i})">
+                        <img src="${escapeHtml(img.imageUrl)}" alt="Gallery image ${i + 1}" loading="lazy">
+                    </div>
+                `);
+                galleryEl.innerHTML = wpBuildMasonryHtml(itemsHtml, wpGetMasonryColumnCount());
+            }
+            document.getElementById('wpLightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeWPLightbox() {
+            document.getElementById('wpLightbox').classList.remove('active');
+            document.body.style.overflow = '';
+            closeWPFullscreen();
+        }
+
+        function openWPFullscreen(index) {
+            if (!wpCurrentImages.length) return;
+            wpFullscreenIndex = index;
+            const viewer = document.getElementById('wpFullscreenViewer');
+            const img = document.getElementById('wpFullscreenImage');
+            img.src = wpCurrentImages[index];
+            updateWPFsCounter();
+            updateWPFsNav();
+            viewer.classList.add('active');
+        }
+
+        function closeWPFullscreen() {
+            document.getElementById('wpFullscreenViewer').classList.remove('active');
+        }
+
+        function navigateWPFullscreen(dir) {
+            const newIdx = wpFullscreenIndex + dir;
+            if (newIdx < 0 || newIdx >= wpCurrentImages.length) return;
+            wpFullscreenIndex = newIdx;
+            const img = document.getElementById('wpFullscreenImage');
+            img.style.opacity = '0';
+            setTimeout(() => {
+                img.src = wpCurrentImages[wpFullscreenIndex];
+                img.style.opacity = '1';
+                updateWPFsCounter();
+                updateWPFsNav();
+            }, 150);
+        }
+
+        function updateWPFsCounter() {
+            const el = document.getElementById('wpFullscreenCounter');
+            if (el) el.textContent = `${wpFullscreenIndex + 1} / ${wpCurrentImages.length}`;
+        }
+
+        function updateWPFsNav() {
+            const prev = document.querySelector('#wpFullscreenViewer .fullscreen-prev');
+            const next = document.querySelector('#wpFullscreenViewer .fullscreen-next');
+            if (prev) prev.disabled = wpFullscreenIndex === 0;
+            if (next) next.disabled = wpFullscreenIndex >= wpCurrentImages.length - 1;
+        }
+
+        // Keyboard support
+        document.addEventListener('keydown', (e) => {
+            const fsActive = document.getElementById('wpFullscreenViewer').classList.contains('active');
+            const lbActive = document.getElementById('wpLightbox').classList.contains('active');
+            if (e.key === 'Escape') {
+                if (fsActive) closeWPFullscreen();
+                else if (lbActive) closeWPLightbox();
+            } else if (fsActive) {
+                if (e.key === 'ArrowLeft') navigateWPFullscreen(-1);
+                if (e.key === 'ArrowRight') navigateWPFullscreen(1);
+            }
+        });
+
+        // Touch swipe in fullscreen
+        (function() {
+            let sx = 0, ex = 0;
+            const v = document.getElementById('wpFullscreenViewer');
+            v.addEventListener('touchstart', (e) => { sx = e.changedTouches[0].screenX; }, { passive: true });
+            v.addEventListener('touchend', (e) => {
+                ex = e.changedTouches[0].screenX;
+                const diff = sx - ex;
+                if (Math.abs(diff) > 50) navigateWPFullscreen(diff > 0 ? 1 : -1);
+            }, { passive: true });
+        })();
+
+        // Re-distribute masonry on resize while lightbox is open
+        let _wpMasonryTimer = null;
+        window.addEventListener('resize', () => {
+            clearTimeout(_wpMasonryTimer);
+            _wpMasonryTimer = setTimeout(() => {
+                const lb = document.getElementById('wpLightbox');
+                if (!lb || !lb.classList.contains('active')) return;
+                const g = document.getElementById('wpLightboxGallery');
+                if (!g) return;
+                const cols = Array.from(g.querySelectorAll('.lightbox-col'));
+                if (cols.length === 0) return;
+                const colItems = cols.map(c => Array.from(c.querySelectorAll('.lightbox-gallery-item')));
+                const ordered = [];
+                let row = 0, more = true;
+                while (more) {
+                    more = false;
+                    for (let i = 0; i < colItems.length; i++) {
+                        if (colItems[i][row]) { ordered.push(colItems[i][row].outerHTML); more = true; }
+                    }
+                    row++;
+                }
+                g.innerHTML = wpBuildMasonryHtml(ordered, wpGetMasonryColumnCount());
+            }, 150);
+        });
+
+        loadWeddingArchives();
+
+        // ============================================
+        // Dynamic content loading from admin API
+        // ============================================
+        
         function escapeAttr(s) {
             return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
         }
@@ -1080,10 +1644,17 @@
 
         async function loadWeddingPhotographyContent() {
             try {
-                const res = await fetch(`${API_BASE_URL}/api/website/weddingPhotography`);
-                const result = await res.json();
-                if (!result || !result.success || !result.data || !result.data.weddingPhotography) return;
-                const wp = result.data.weddingPhotography;
+                // Reuse the early-fired promise from <head> if available; otherwise fetch now
+                let wp = null;
+                if (window.__wpHeroPromise) {
+                    wp = await window.__wpHeroPromise;
+                }
+                if (!wp) {
+                    const res = await fetch(`${API_BASE_URL}/api/website/weddingPhotography`);
+                    const result = await res.json();
+                    if (!result || !result.success || !result.data || !result.data.weddingPhotography) return;
+                    wp = result.data.weddingPhotography;
+                }
                 if (wp.heroImageUrl) {
                     document.querySelector('.page-hero').style.setProperty('--hero-bg-image', `url('${wp.heroImageUrl}')`);
                 }

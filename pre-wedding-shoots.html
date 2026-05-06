@@ -27,13 +27,18 @@
     <meta property="og:title" content="Pre-Wedding Shoots London | Engagement Photography – Heston Photo">
     <meta property="og:description" content="Relaxed yet polished pre-wedding & engagement shoots in London, Paris, Rome and beyond. A beautiful visual prelude to your wedding day.">
     <meta property="og:image" content="https://hestonphoto.com/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Heston Photo – Pre-Wedding Shoots London">
     <meta property="og:site_name" content="Heston Photo">
+    <meta property="og:locale" content="en_GB">
 
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Pre-Wedding Shoots London – Heston Photo">
-    <meta name="twitter:description" content="A beautiful visual prelude to your wedding. Engagement & pre-wedding shoots in London, Paris, Rome and beyond.">
+    <meta name="twitter:description" content="A beautiful visual prelude to your wedding. Engagement &amp; pre-wedding shoots in London, Paris, Rome and beyond.">
     <meta name="twitter:image" content="https://hestonphoto.com/og-image.jpg">
+    <meta name="twitter:image:alt" content="Heston Photo – Pre-Wedding Shoots London">
 
     <!-- Favicons -->
     <link rel="icon" type="image/x-icon" href="favicon.ico">
@@ -165,7 +170,8 @@
         .logo-img { height: 50px; width: auto; }
         .logo h1 { font-size: 1.5rem; color: var(--white); letter-spacing: 0.02em; }
         .logo h1 span { color: var(--gold); }
-        nav ul { display: flex; list-style: none; gap: 2.5rem; }
+        nav ul { display: flex; list-style: none; gap: 2.5rem; align-items: center; }
+        nav ul > li { display: flex; align-items: center; }
         nav a {
             text-decoration: none;
             color: var(--white);
@@ -1258,14 +1264,32 @@
             justify-content: center;
             opacity: 0;
             transition: opacity 0.3s ease;
+            overflow-y: auto;
+            -webkit-overflow-scrolling: touch;
+            overscroll-behavior: contain;
         }
         .fullscreen-viewer.active { display: flex; animation: lightboxFadeIn 0.3s ease forwards; }
         .fullscreen-viewer-image {
             max-width: 92vw; max-height: 86vh;
+            max-height: 86dvh;
             object-fit: contain;
             border-radius: 4px;
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
             transition: opacity 0.2s ease;
+        }
+        @media (max-width: 768px) {
+            .fullscreen-viewer {
+                align-items: flex-start;
+                padding: 4.5rem 0 5rem;
+            }
+            .fullscreen-viewer-image {
+                max-width: 96vw;
+                max-height: none;
+                width: 96vw;
+                height: auto;
+                border-radius: 4px;
+                margin: auto;
+            }
         }
         .fullscreen-close {
             position: absolute; top: 1.25rem; right: 1.25rem;
@@ -2083,18 +2107,25 @@
             }
         });
 
-        // Touch/swipe in fullscreen viewer
-        let touchStartX = 0, touchEndX = 0;
+        // Touch/swipe in fullscreen viewer — horizontal only so vertical scroll is preserved
+        let touchStartX = 0, touchStartY = 0, touchEndX = 0;
         document.addEventListener('touchstart', (e) => {
             const fs = document.getElementById('fullscreenViewer');
-            if (fs && fs.classList.contains('active')) touchStartX = e.changedTouches[0].screenX;
+            if (fs && fs.classList.contains('active')) {
+                touchStartX = e.changedTouches[0].screenX;
+                touchStartY = e.changedTouches[0].screenY;
+            }
         }, { passive: true });
         document.addEventListener('touchend', (e) => {
             const fs = document.getElementById('fullscreenViewer');
             if (fs && fs.classList.contains('active')) {
                 touchEndX = e.changedTouches[0].screenX;
-                const diff = touchStartX - touchEndX;
-                if (Math.abs(diff) > 50) navigateFullscreen(diff > 0 ? 1 : -1);
+                const diffX = touchStartX - touchEndX;
+                const diffY = touchStartY - e.changedTouches[0].screenY;
+                // Only treat as horizontal swipe if X movement dominates
+                if (Math.abs(diffX) > 50 && Math.abs(diffX) > Math.abs(diffY) * 1.5) {
+                    navigateFullscreen(diffX > 0 ? 1 : -1);
+                }
             }
         }, { passive: true });
 

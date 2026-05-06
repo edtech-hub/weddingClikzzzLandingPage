@@ -66,6 +66,33 @@
     <link rel="preconnect" href="https://hestonadminapi.edastra.in" crossorigin>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <!-- Preload default preloader background so it renders immediately -->
+    <link rel="preload" as="image" href="Photo%20Grid%20for%20website%20.jpeg" fetchpriority="high" id="preloaderImgPreload">
+
+    <!-- Apply cached preloader image before any paint; fire API fetch early -->
+    <script>
+        (function() {
+            try {
+                var isMobile = window.innerWidth < 768;
+                var cached = localStorage.getItem(isMobile ? 'preloaderMobileUrl' : 'preloaderDesktopUrl');
+                if (cached) {
+                    // Override default image with cached one before CSS is applied
+                    var s = document.createElement('style');
+                    s.textContent = '.preloader-bg{background-image:url("' + cached.replace(/"/g, '%22') + '")!important}';
+                    document.head.appendChild(s);
+                    // Also update the preload hint to fetch the right image
+                    document.getElementById('preloaderImgPreload').href = cached;
+                }
+            } catch(e) {}
+            // Fire the home API call as early as possible so data is ready
+            var _isLocal = location.hostname === 'localhost' || location.hostname === '127.0.0.1';
+            var _API = _isLocal ? 'http://localhost:3000' : 'https://hestonadminapi.edastra.in';
+            window.__homePromise = fetch(_API + '/api/website/home')
+                .then(function(r) { return r.json(); })
+                .catch(function() { return null; });
+        })();
+    </script>
     
     <!-- Fonts - render non-blocking with display=swap -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,500&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
@@ -455,6 +482,12 @@
             display: flex;
             list-style: none;
             gap: 2.5rem;
+            align-items: center;
+        }
+
+        nav ul > li {
+            display: flex;
+            align-items: center;
         }
 
         nav a {
@@ -2766,7 +2799,19 @@
 
         /* Contact Section */
         .contact-section {
-            background: var(--cream);
+            background: #F2EDE4;
+        }
+
+        .contact-section .section-label {
+            color: var(--gold);
+        }
+
+        .contact-section .section-title {
+            color: var(--charcoal);
+        }
+
+        .contact-section .section-subtitle {
+            color: var(--text-light);
         }
 
         .contact-grid {
@@ -5120,19 +5165,6 @@
             </div>
         </div>
     </div>
-    <script>
-        // Apply cached preloader image immediately for instant display
-        (function() {
-            try {
-                var isMobile = window.innerWidth < 768;
-                var cachedUrl = localStorage.getItem(isMobile ? 'preloaderMobileUrl' : 'preloaderDesktopUrl');
-                if (cachedUrl) {
-                    var bg = document.getElementById('preloaderBg');
-                    if (bg) bg.style.backgroundImage = 'url(' + cachedUrl + ')';
-                }
-            } catch(e) {}
-        })();
-    </script>
 
     <!-- Header -->
     <header id="header">
@@ -5733,10 +5765,10 @@
             // Use cached data if already fetched
             if (_apiCache.home) { applyHomeContent(_apiCache.home); return; }
             try {
-                const response = await fetch(`${API_BASE_URL}/api/website/home`);
-                const result = await response.json();
+                // Reuse the early head-fired promise to avoid a second round-trip
+                const result = window.__homePromise ? await window.__homePromise : await fetch(`${API_BASE_URL}/api/website/home`).then(r => r.json());
                 
-                if (result.success && result.data) {
+                if (result && result.success && result.data) {
                     _apiCache.home = result.data;
                     applyHomeContent(result.data);
                 }
